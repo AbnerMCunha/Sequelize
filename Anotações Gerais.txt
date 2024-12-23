@@ -1,0 +1,68 @@
+
+modelo: camada de representação dos Dados
+
+//Arquivo .sequelizerc necessário, para resolver um problema criado ao dar o comando "npx sequelize-cli init", na raiz da Pasta do Projeto.
+//Isso inicializa o Sequelize, criando os arquivos de Config, Models, Migrations e Seeders, 
+//Como vamos utilizar essas pasta no src, devemos avisar ao sequelize, onde elas foram realocadas
+
+
+
+/*
+Além do arquivo config.json a documentação do Sequelize também dá exemplos de outras formas de estabelecer uma conexão com o banco:
+
+    const { Sequelize } = require('sequelize');
+
+    // Opção 1: 
+    const sequelize = new Sequelize('sqlite::memory:') // Exemplo SQLite
+    const sequelize = new Sequelize('postgres://user:pass@hostdobanco.com:5432/nomedb) // Exemplo Postgres
+
+    // Opção 2: 
+    // Criar uma nova instância de Sequelize recebendo os parâmetros (SQLite)
+    const sequelize = new Sequelize({
+    dialect: 'sqlite',
+    storage: 'caminho/database.sqlite'
+    });
+
+    // Opção 3: 
+    // Criar uma nova instância de Sequelize recebendo os parâmetros (outros dialetos)
+    const sequelize = new Sequelize('database', 'username', 'password', {
+    host: 'localhost',
+    dialect: // escolher entre 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mssql' | 'db2' | 'snowflake' | 'oracle' 
+    });
+*/
+
+
+
+Comando pelo Cli do Sequeliz para criar tabelam com atributos, na linha de comando com o cli do sequelize:
+    "npx sequelize-cli model:generate --name Pessoa --attributes nome:string,email:string,cpf:string,ativo:boolean,role:string"
+Cria a Tabela: "npx sequelize-cli model:generate --name Pessoa "
+Cria os Campos com seu Tipo: "--attributes nome:string,email:string,cpf:string,ativo:boolean,role:string"
+
+Anotação: Sempre definir o "tableName" diferente do "modelName" no Modelo criado pois o ORM, costuma gerar um nome automaticamente. 
+    Exemplo: {modelName: "Pessoa" , "tableName":"pessoas"}
+        Por Convenção, nome da Classe tem o Incio Maiusculo, e nomde de Tabela é minusculo com uderline(_) para tabelas, para facilitar debug.
+
+/*
+O arquivo models/index.js é um dos arquivos gerados automaticamente pela ferramenta de linha de comando do Sequelize ao criarmos uma base de projeto com sequelize init.
+
+Este arquivo é utilizado para gerar os objetos (com métodos e propriedades) necessários referentes a cada modelo usado no API, e o Sequelize faz isso executando o models/index.js em quatro passos:
+
+1 - Verificar qual é o ambiente de execução e as credenciais de acesso ao banco correspondentes. Já existe um código pronto para buscar o ambiente em um arquivo .env ou, na falta dele, assumir que o ambiente a ser utilizado é development:
+2 - Criar uma nova instância de Sequelize a partir dos dados de conexão:
+
+3 - Percorrer a pasta models, indexar e executar o código de cada modelo dentro da pasta e salvar o objeto resultante na variável db:
+
+4 - Indexar quais modelos estão associados entre si e os métodos correspondentes (iremos falar de associações durante este curso):
+
+
+*/
+
+Comando para Enviar Alterações ao Banco
+    npx sequelize-cli db:migrate
+
+Comando para Gerar Seeds para popular dados
+    npx sequelize-cli seed:generate --name demo-pessoa
+    
+    Comando para executar o seeder e defato inserir dados:    
+        0. Verificar nomenclatura da tabela, gerada no arquivo de Seeder
+        1. "sequelize-cli db:seed:all "
